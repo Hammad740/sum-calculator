@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sum Calculator</title>
+    <style>
+      html {
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+          'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        letter-spacing: 1.1px;
+        font-weight: 500;
+      }
+      body {
+        background-color: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      input[type='text'] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #result {
+        margin-top: 15px;
+        font-size: 18px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Sum Calculator</h1>
+      <input type="text" id="a" placeholder="First value" />
+      <input type="text" id="b" placeholder="Second value" />
+      <button id="btn" onclick="sendRequest()">Find Sum</button>
+      <div id="result"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const url = `http://localhost:4000/sum`
+
+      async function sendRequest() {
+        const a = parseFloat(document.getElementById('a').value)
+        const b = parseFloat(document.getElementById('b').value)
+
+        if (isNaN(a) || isNaN(b)) {
+          document.getElementById('result').innerText =
+            'Please enter valid numbers!'
+          return
+        }
+
+        try {
+          const response = await axios.post(url, { a, b })
+          document.getElementById(
+            'result'
+          ).innerText = `Sum: ${response.data.sum}`
+        } catch (error) {
+          console.error('Error:', error.message)
+          document.getElementById('result').innerText =
+            'An error occurred. Please try again.'
+        }
+      }
+    </script>
+  </body>
+</html>
